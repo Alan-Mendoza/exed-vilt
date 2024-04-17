@@ -5,10 +5,12 @@ import JetApplicationMark from '@/Components/ApplicationMark.vue';
 import JetPrimaryButton from '@/Components/PrimaryButton.vue';
 
 import Section from '@/Personal-Components/Section.vue';
+import Skill from '@/Personal-Components/Skill.vue';
 
 defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
+    skills: Object,
 });
 </script>
 
@@ -53,12 +55,20 @@ defineProps({
 
     <Section id="skills" class="bg-gray-600 text-gray-200 h-screen">
         <h2 class="text-6xl font-bold">Skill</h2>
+        <div class="grid grid-cols-2">
+            <div v-for="skill in skills" :key="skill.id">
+                <Skill :background="skill.color">
+                    {{ skill.name }}
+                </Skill>
+            </div>
+        </div>
         <div class="flex justify-center mt-10">
             <jet-primary-button class="bg-indigo-800 rounded font-bold text-sm text-gray-200 hover:bg-indigo-700">
                 Get in touch
             </jet-primary-button>
         </div>
     </Section>
+
     <Section class="bg-gray-300 text-gray-800 h-screen">
         <h2 class="text-6xl font-bold">Projects</h2>
         <div class="flex justify-center mt-10">
@@ -71,9 +81,15 @@ defineProps({
     <Section class="flex justify-between bg-gray-800 text-gray-300 test-xl">
         <p>&copy; Alan Mendoza. All rights reserved.</p>
         <div class="flex justify-evenly items-center">
-            GitHub
-            Facebook
-            StackOverflow
+            <Link class="border-b pb-1 px-2 hover:text-gray-50" href="#" target="_blank">
+                GitHub
+            </Link>
+            <Link class="border-b pb-1 px-2 hover:text-gray-50" href="#" target="_blank">
+                Facebook
+            </Link>
+            <Link class="border-b pb-1 px-2 hover:text-gray-50" href="#" target="_blank">
+                StackOverflow
+            </Link>
         </div>
     </Section>
 </template>
