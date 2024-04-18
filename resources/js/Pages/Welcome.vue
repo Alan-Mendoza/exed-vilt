@@ -8,14 +8,16 @@ import Section from '@/Personal-Components/Section.vue';
 import Skill from '@/Personal-Components/Skill.vue';
 import Project from '@/Personal-Components/Project.vue';
 
-import { BeakerIcon } from '@heroicons/vue/20/solid';
-// import { defineAsyncComponent } from 'vue';
+// import { BeakerIcon } from '@heroicons/vue/24/solid';
 
-// const componentName = (index) => {
-//     return defineAsyncComponent(() =>
-//         import('@heroicons/vue/solid/' + this.projects[index].icon_name + 'Icon.js')
-//     );
-// }
+import * as HeroiconsSolid from '@heroicons/vue/24/solid';
+import { defineAsyncComponent } from 'vue';
+
+const myMethod = (projects, index) => {
+    const iconName = projects[index].icon_name;
+    const IconComponent = HeroiconsSolid[`${iconName}Icon`];
+    return defineAsyncComponent(() => Promise.resolve(IconComponent));
+};
 
 defineProps({
     canLogin: Boolean,
@@ -85,8 +87,9 @@ defineProps({
         <h2 class="text-6xl font-bold">Projects</h2>
         <div v-for="(project, index) in projects" :key="project.id">
             <Project :title="project.title" :description="project.description" :color="project.color">
-                <!-- <component :is="componentName(index)"></component> -->
-                <BeakerIcon></BeakerIcon>
+                <!-- <component :is="myMethod(index)"></component> -->
+                <component :is="myMethod(projects, index)"></component>
+                <!-- <BeakerIcon></BeakerIcon> -->
             </Project>
         </div>
         <div class="flex justify-center mt-10">

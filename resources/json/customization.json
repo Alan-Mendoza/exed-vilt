@@ -22,12 +22,12 @@
         "AcademicCap",
         "BookOpen",
         "ChartPie",
-        "Chat",
-        "Chip",
+        "Heart",
+        "CircleStack",
         "Cube",
         "CurrencyDollar",
-        "Database",
+        "Battery100",
         "LockClosed",
-        "Terminal"
+        "Tag"
     ]
 }
