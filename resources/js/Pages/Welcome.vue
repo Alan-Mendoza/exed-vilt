@@ -6,12 +6,24 @@ import JetPrimaryButton from '@/Components/PrimaryButton.vue';
 
 import Section from '@/Personal-Components/Section.vue';
 import Skill from '@/Personal-Components/Skill.vue';
+import Project from '@/Personal-Components/Project.vue';
+
+import { BeakerIcon } from '@heroicons/vue/20/solid';
+// import { defineAsyncComponent } from 'vue';
+
+// const componentName = (index) => {
+//     return defineAsyncComponent(() =>
+//         import('@heroicons/vue/solid/' + this.projects[index].icon_name + 'Icon.js')
+//     );
+// }
 
 defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
     skills: Object,
+    projects: Object,
 });
+
 </script>
 
 <template>
@@ -71,6 +83,12 @@ defineProps({
 
     <Section class="bg-gray-300 text-gray-800 h-screen">
         <h2 class="text-6xl font-bold">Projects</h2>
+        <div v-for="(project, index) in projects" :key="project.id">
+            <Project :title="project.title" :description="project.description" :color="project.color">
+                <!-- <component :is="componentName(index)"></component> -->
+                <BeakerIcon></BeakerIcon>
+            </Project>
+        </div>
         <div class="flex justify-center mt-10">
             <jet-primary-button class="bg-purple-100 rounded font-bold text-sm text-gray-800 hover:bg-purple-200">
                 Know more
