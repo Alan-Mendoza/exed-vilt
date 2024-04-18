@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContactController;
+use App\Mail\ContactedMessage;
 use App\Models\Project;
 use App\Models\Skill;
 use Illuminate\Foundation\Application;
@@ -38,3 +39,7 @@ Route::middleware([
 });
 
 Route::post('contact', [ContactController::class, 'contact'])->name('contact');
+
+Route::get('test', function () {
+    return new ContactedMessage('test@test.com', 'Hello, please send me CV.');
+})->name('test');
