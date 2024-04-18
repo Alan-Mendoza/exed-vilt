@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, router, useForm } from '@inertiajs/vue3';
 
 import JetApplicationMark from '@/Components/ApplicationMark.vue';
 import JetPrimaryButton from '@/Components/PrimaryButton.vue';
@@ -14,7 +14,7 @@ import Project from '@/Personal-Components/Project.vue'; // Componente personali
 // import { BeakerIcon } from '@heroicons/vue/24/solid';
 
 import * as HeroiconsSolid from '@heroicons/vue/24/solid'; // Importar todos los iconos de Heroicons
-import { defineAsyncComponent } from 'vue'; // Funcion Async Component para cargar los iconos de Heroicons
+import { defineAsyncComponent, reactive } from 'vue'; // Funcion Async Component para cargar los iconos de Heroicons
 import { ref } from 'vue'; // Modal
 
 const myMethod = (projects, index) => {
@@ -25,6 +25,24 @@ const myMethod = (projects, index) => {
 
 // Modal
 const contacting = ref(false); // Estado para controlar si el modal de contacto está abierto o cerrado
+
+// Formulario
+// const form = reactive({
+//     email: '',
+//     message: '',
+// });
+// function submit() {
+//   router.post('contact', form)
+// }
+
+const form = useForm({
+    email: '',
+    message: '',
+});
+
+const submit = () => {
+    form.post(route('contact'));
+};
 
 defineProps({
     canLogin: Boolean,
@@ -126,9 +144,9 @@ defineProps({
         <div class="bg-gray-50 shadow-2xl p-8">
             <!-- Aquí puedes colocar el contenido del modal de contacto -->
             <h2 class="text-gray-600 text-2xl font-extrabold text-center">Let me know some details</h2>
-            <form class="flex flex-col items-center p-16">
-                <jet-text-input class="px-5 py-3 w-96 border border-gray-600 rounded" type="email" name="email" placeholder="Your email"></jet-text-input>
-                <textarea class="px-5 py-3 w-96 border border-gray-600 rounded mt-5" name="message" placeholder="The details :)"></textarea>
+            <form class="flex flex-col items-center p-16" @submit.prevent="submit">
+                <jet-text-input class="px-5 py-3 w-96 border border-gray-600 rounded" type="email" name="email" placeholder="Your email" v-model="form.email"></jet-text-input>
+                <textarea class="px-5 py-3 w-96 border border-gray-600 rounded mt-5" name="message" placeholder="The details :)" v-model="form.message"></textarea>
                 <jet-primary-button class="px-5 py-3 mt-5 w-96 bg-purple-400 justify-center rounded-xl text-sm">
                     Get in touch
                 </jet-primary-button>
