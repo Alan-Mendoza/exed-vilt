@@ -1,6 +1,7 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import Welcome from '@/Components/Welcome.vue';
+import { Link } from '@inertiajs/vue3';
+// import Welcome from '@/Components/Welcome.vue';
 </script>
 
 <template>
@@ -13,8 +14,19 @@ import Welcome from '@/Components/Welcome.vue';
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <Welcome />
+                <div class="bg-white overflow-hidden shadow-xl rounded-lg p-6 border-b border-gray-200 flex flex-col text-xl">
+                    <!-- <Welcome /> -->
+                    <p class="mb-5">Your Resources</p>
+                    <ul class="p-3">
+                        <li class="ml-2 flex flex-row items-center">
+                            <div class="bg-gray-500 mr-3 h-2 w-2"></div>
+                            <Link :href="route('skills.index')" class="hover:text-gray-800 mt-2 text-sm text-indigo-500 border-b border-gray-400">Skills</Link>
+                        </li>
+                        <li class="ml-2 flex flex-row items-center">
+                            <div class="bg-gray-500 mr-3 h-2 w-2"></div>
+                            <Link :href="route('projects.index')" class="hover:text-gray-800 mt-2 text-sm text-indigo-500 border-b border-gray-400">Projects</Link>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
