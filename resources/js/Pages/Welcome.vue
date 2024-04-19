@@ -17,6 +17,9 @@ import * as HeroiconsSolid from '@heroicons/vue/24/solid'; // Importar todos los
 import { defineAsyncComponent, reactive } from 'vue'; // Funcion Async Component para cargar los iconos de Heroicons
 import { ref } from 'vue'; // Modal
 
+// vaidaciones
+import JetInputError from '@/Components/InputError.vue';
+
 const myMethod = (projects, index) => {
     const iconName = projects[index].icon_name;
     const IconComponent = HeroiconsSolid[`${iconName}Icon`];
@@ -146,9 +149,12 @@ defineProps({
             <h2 class="text-gray-600 text-2xl font-extrabold text-center">Let me know some details</h2>
             <form class="flex flex-col items-center p-16" @submit.prevent="submit">
                 <jet-text-input class="px-5 py-3 w-96 border border-gray-600 rounded" type="email" name="email" placeholder="Your email" v-model="form.email"></jet-text-input>
+                <jet-input-error :message="form.errors.email" />
                 <textarea class="px-5 py-3 w-96 border border-gray-600 rounded mt-5" name="message" placeholder="The details :)" v-model="form.message"></textarea>
-                <jet-primary-button class="px-5 py-3 mt-5 w-96 bg-purple-400 justify-center rounded-xl text-sm">
-                    Get in touch
+                <jet-input-error :message="form.errors.message" />
+                <jet-primary-button class="px-5 py-3 mt-5 w-96 bg-purple-400 justify-center rounded-xl text-sm" :disabled="form.processing">
+                    <span class="animate-spin mr-1" v-show="form.processing">&#9696;</span>
+                    <span v-show="!form.processing">Get in touch</span>
                 </jet-primary-button>
             </form>
         </div>
