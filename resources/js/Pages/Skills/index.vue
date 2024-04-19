@@ -1,9 +1,36 @@
 <script setup>
+    import { Head, Link, router, useForm } from '@inertiajs/vue3';
     import AppLayout from '@/Layouts/AppLayout.vue';
     import JetPrimaryButton from '@/Components/PrimaryButton.vue';
 
+    // vaidaciones
+    import JetInputError from '@/Components/InputError.vue';
+
+    import JetModal from '@/Components/Modal.vue';
+    import JetTextInput from '@/Components/TextInput.vue';
+
+    import { ref } from 'vue'; // Modal
+
+    // Modal
+    const acting = ref(false); // Estado para controlar si el modal de contacto está abierto o cerrado
+
+    const form = useForm({
+        name: '',
+        color: '',
+    });
+
+    const submit = () => {
+        form.submit('post', route('skills.store'), {
+            onSuccess: () => {
+                form.reset('name', 'color');
+                acting.value = false;
+            }
+        });
+    };
+
     defineProps({
         skills: Object,
+        colors: Object,
     });
 </script>
 
@@ -16,17 +43,42 @@
         </template>
 
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-right">
+                <jet-primary-button class="p-3 border-2 border-blue-500 text-blue-500 bg-blue-100 hover:bg-blue-200 font-bold rounded-xl" @click="acting = true">
+                    Add New +
+                </jet-primary-button>
+                <!-- Modal de Crear Skill -->
+                <jet-modal :show="acting" @close="acting = false">
+                    <div class="bg-gray-50 shadow-2xl p-8"> <!-- Aca se detectara el else sin no mando pues se mostrara el formulario -->
+                        <!-- Aquí puedes colocar el contenido del modal de contacto -->
+                        <h2 class="text-gray-600 text-2xl font-extrabold text-center">Let me know some details</h2>
+                        <form class="flex flex-col items-center p-16" @submit.prevent="submit">
+                            <jet-text-input class="px-5 py-3 w-96 border border-gray-600 rounded" type="text" name="name" placeholder="Skill Name" v-model="form.name"></jet-text-input>
+                            <jet-input-error :message="form.errors.name" />
+
+                            <select class="w-96 border-gray-600 rounded mt-5" v-model="form.color">
+                                <option value="">Select color</option>
+                                <option v-for="color in colors" :key="color.id" :value="color">{{ color }}</option>
+                            </select>
+                            <jet-input-error :message="form.errors.color" />
+
+                            <jet-primary-button class="px-5 py-3 mt-5 w-96 bg-purple-400 justify-center rounded-xl text-sm" :disabled="form.processing">
+                                <span class="animate-spin mr-1" v-show="form.processing">&#9696;</span>
+                                <span v-show="!form.processing">Submit</span>
+                            </jet-primary-button>
+                        </form>
+                    </div>
+                </jet-modal>
                 <table v-if="skills.length > 0" class="w-full">
                     <thead class="border-b-2 border-gray-300 text-indigo-600">
                         <tr>
-                            <th class="px-6 py-3">
+                            <th class="px-6 py-3 text-right">
                                 Name
                             </th>
-                            <th class="px-6 py-3">
+                            <th class="px-6 py-3 text-right">
                                 Color
                             </th>
-                            <th class="px-6 py-3">
+                            <th class="px-6 py-3 text-right">
                                 Actions
                             </th>
                         </tr>
