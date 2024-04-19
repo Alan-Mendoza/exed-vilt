@@ -83,10 +83,10 @@ defineProps({
     <Section class="bg-gray-800 pt-16 h-screen">
         <div class="h-2/3 flex flex-wrap content-between border-gray-600 pb-36">
             <p class="border-b-2 font-bold border-gray-400 pb-3 text-2xl text-gray-300 uppercase">Hey! This is Alan. I'm a Software Engineer and I would like to work with you.</p>
-            <div class="flex items-end border-b-2 border-gray-500 pb-2 ml-1">
+            <div class="flex items-end border-b-2 border-gray-500 pb-2 mr-8">
                 <p class="font-bold mr-5 text-gray-500 text-xl">Want to know more?</p>
                 <jet-primary-button class="bg-green-400 rounded font-bold text-sm text-gray-800 hover:bg-green-500" @click="contacting = true">
-                    Let's Chat
+                    {{ $page.props.flash && $page.props.flash.contacted ? 'Thanks' : "Let's Chat" }}
                 </jet-primary-button>
             </div>
         </div>
@@ -106,7 +106,7 @@ defineProps({
         </div>
         <div class="flex justify-center mt-10">
             <jet-primary-button class="bg-indigo-800 rounded font-bold text-sm text-gray-200 hover:bg-indigo-700" @click="contacting = true">
-                Get in touch
+                {{ $page.props.flash && $page.props.flash.contacted ? 'Thanks' : "Get in touch" }}
             </jet-primary-button>
         </div>
     </Section>
@@ -122,7 +122,7 @@ defineProps({
         </div>
         <div class="flex justify-center mt-10">
             <jet-primary-button class="bg-purple-500 rounded font-bold text-sm text-gray-800 hover:bg-purple-400" @click="contacting = true">
-                Know more
+                {{ $page.props.flash && $page.props.flash.contacted ? 'Thanks' : "Know more" }}
             </jet-primary-button>
         </div>
     </Section>
@@ -144,7 +144,12 @@ defineProps({
 
     <!-- Modal de contacto -->
     <jet-modal :show="contacting" @close="contacting = false">
-        <div class="bg-gray-50 shadow-2xl p-8">
+        <div v-if="$page.props.flash && $page.props.flash.contacted" class="bg-green-400 shadow-2xl p-8 text-center font-bold"> <!-- Este div se mostrara cuando el usuario haya mandado el email en sesion -->
+            <p class="text-8xl m-5">👍🏻</p>
+            <p class="text-5xl font-bold m-2">Thanks!</p>
+            <p class="text-2xl m-2">I'll get back to you soon.</p>
+        </div>
+        <div class="bg-gray-50 shadow-2xl p-8" v-else> <!-- Aca se detectara el else sin no mando pues se mostrara el formulario -->
             <!-- Aquí puedes colocar el contenido del modal de contacto -->
             <h2 class="text-gray-600 text-2xl font-extrabold text-center">Let me know some details</h2>
             <form class="flex flex-col items-center p-16" @submit.prevent="submit">
