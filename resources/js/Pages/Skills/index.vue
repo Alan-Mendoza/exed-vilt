@@ -69,16 +69,16 @@
                         </form>
                     </div>
                 </jet-modal>
-                <table v-if="skills.length > 0" class="w-full">
+                <table v-if="skills.length > 0" class="w-full text-left">
                     <thead class="border-b-2 border-gray-300 text-indigo-600">
                         <tr>
-                            <th class="px-6 py-3 text-right">
+                            <th class="px-6 py-3">
                                 Name
                             </th>
-                            <th class="px-6 py-3 text-right">
+                            <th class="px-6 py-3">
                                 Color
                             </th>
-                            <th class="px-6 py-3 text-right">
+                            <th class="px-6 py-3">
                                 Actions
                             </th>
                         </tr>
@@ -94,7 +94,7 @@
                                     {{ skill.color }}
                                 </p>
                             </td>
-                            <td class="px-6 py-4 text-center">
+                            <td class="px-6 py-4">
                                 <jet-primary-button class="border border-indigo-500 text-indigo-500 bg-indigo-400 hover:bg-indigo-300 mr-2">
                                     Edit
                                 </jet-primary-button>
