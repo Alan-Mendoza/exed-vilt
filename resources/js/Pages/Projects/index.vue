@@ -65,6 +65,16 @@
                     selectedProject = null; // Restablecer la habilidad seleccionada
                 }
             });
+        } else if (mode === 'delete') {
+            if (!selectedProject) return; // Asegurarse de que haya una habilidad seleccionada
+
+            form.submit('delete', route('projects.destroy', [selectedProject.id]), {
+                onSuccess: () => {
+                    // Aquí podrías actualizar la lista de habilidades después de eliminar la habilidad
+                    mode = 'create'; // Restablecer el modo a 'create' después de la eliminación
+                    selectedProject = null; // Restablecer la habilidad seleccionada
+                }
+            });
         }
     };
 
@@ -173,15 +183,16 @@
                                     Edit
                                 </jet-primary-button>
                                 <jet-primary-button
-                                    class=" border border-red-500 text-red-800 bg-red-400 hover:bg-red-300 ml-2">
+                                    class=" border border-red-500 text-red-800 bg-red-400 hover:bg-red-300 ml-2"
+                                    @click="mode = 'delete'; selectedProject = project; submit()">
                                     Delete
                                 </jet-primary-button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <div v-else class="bg-red-100 border border-red-400 p-3 rounded-lg text-red-800">
-                    There are no skills yet. Let's create one :)
+                <div v-else class="bg-red-100 border border-red-400 p-3 rounded-lg text-red-800 mt-5 text-left">
+                    There are no Projects yet. Let's create one :)
                 </div>
             </div>
         </div>

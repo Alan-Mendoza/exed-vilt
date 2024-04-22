@@ -30,34 +30,44 @@
 //     });
 // };
 
-// Variable para distinguir entre crear y editar
-let mode = 'create';
+    // Variable para distinguir entre crear y editar
+    let mode = 'create';
 
-// Habilidad seleccionada para editar
-let selectedSkill = null;
+    // Habilidad seleccionada para editar
+    let selectedSkill = null;
 
-// Función para manejar la sumisión del formulario
-const submit = () => {
-    if (mode === 'create') {
-        form.submit('post', route('skills.store'), {
-            onSuccess: () => {
-                form.reset('name', 'color');
-                acting.value = false;
-            }
-        });
-    } else if (mode === 'edit') {
-        if (!selectedSkill) return; // Asegurarse de que haya una habilidad seleccionada
+    // Función para manejar la sumisión del formulario
+    const submit = () => {
+        if (mode === 'create') {
+            form.submit('post', route('skills.store'), {
+                onSuccess: () => {
+                    form.reset('name', 'color');
+                    acting.value = false;
+                }
+            });
+        } else if (mode === 'edit') {
+            if (!selectedSkill) return; // Asegurarse de que haya una habilidad seleccionada
 
-        form.submit('put', route('skills.update', [selectedSkill.id]), {
-            onSuccess: () => {
-                form.reset('name', 'color');
-                acting.value = false;
-                mode = 'create'; // Restablecer el modo a 'create' después de la edición
-                selectedSkill = null; // Restablecer la habilidad seleccionada
-            }
-        });
-    }
-};
+            form.submit('put', route('skills.update', [selectedSkill.id]), {
+                onSuccess: () => {
+                    form.reset('name', 'color');
+                    acting.value = false;
+                    mode = 'create'; // Restablecer el modo a 'create' después de la edición
+                    selectedSkill = null; // Restablecer la habilidad seleccionada
+                }
+            });
+        } else if (mode === 'delete') {
+            if (!selectedSkill) return; // Asegurarse de que haya una habilidad seleccionada
+
+            form.submit('delete', route('skills.destroy', [selectedSkill.id]), {
+                onSuccess: () => {
+                    // Aquí podrías actualizar la lista de habilidades después de eliminar la habilidad
+                    mode = 'create'; // Restablecer el modo a 'create' después de la eliminación
+                    selectedSkill = null; // Restablecer la habilidad seleccionada
+                }
+            });
+        }
+    };
 
     defineProps({
         skills: Object,
@@ -138,14 +148,15 @@ const submit = () => {
                                     Edit
                                 </jet-primary-button>
                                 <jet-primary-button
-                                    class="border border-red-500 text-red-800 bg-red-400 hover:bg-red-300 ml-2">
+                                    class="border border-red-500 text-red-800 bg-red-400 hover:bg-red-300 ml-2"
+                                    @click="mode = 'delete'; selectedSkill = skill; submit()">
                                     Delete
                                 </jet-primary-button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <div v-else class="bg-red-100 border border-red-400 p-3 rounded-lg text-red-800">
+                <div v-else class="bg-red-100 border border-red-400 p-3 rounded-lg text-red-800 mt-5 text-left">
                     There are no skills yet. Let's create one :)
                 </div>
             </div>
