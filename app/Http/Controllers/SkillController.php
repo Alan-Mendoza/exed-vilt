@@ -28,4 +28,16 @@ class SkillController extends Controller
 
         return redirect()->route('skills.index');
     }
+
+    public function update(Request $request, Skill $skill)
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:225', Rule::unique(Skill::class)->ignore($skill->id)],
+            'color' => ['required', 'in:' . implode(',', Skill::getAvailableBackgroundColors())],
+        ]);
+
+        $skill->update($request->all());
+
+        return redirect()->route('skills.index');
+    }
 }
