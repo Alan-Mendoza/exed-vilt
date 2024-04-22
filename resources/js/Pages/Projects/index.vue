@@ -30,13 +30,42 @@
         icon_name: '',
     });
 
+    // const submit = () => {
+    //     form.submit('post', route('projects.store'), {
+    //         onSuccess: () => {
+    //             form.reset('title', 'description', 'color', 'icon_name');
+    //             acting.value = false;
+    //         }
+    //     });
+// };
+
+    // Variable para distinguir entre crear y editar
+    let mode = 'create';
+
+    // Habilidad seleccionada para editar
+    let selectedProject = null;
+
+    // Función para manejar la sumisión del formulario
     const submit = () => {
-        form.submit('post', route('projects.store'), {
-            onSuccess: () => {
-                form.reset('title', 'description', 'color', 'icon_name');
-                acting.value = false;
-            }
-        });
+        if (mode === 'create') {
+            form.submit('post', route('projects.store'), {
+                onSuccess: () => {
+                    form.reset('title', 'description', 'color', 'icon_name');
+                    acting.value = false;
+                }
+            });
+        } else if (mode === 'edit') {
+            if (!selectedProject) return; // Asegurarse de que haya una habilidad seleccionada
+
+            form.submit('put', route('projects.update', [selectedProject.id]), {
+                onSuccess: () => {
+                    form.reset('title', 'description', 'color', 'icon_name');
+                    acting.value = false;
+                    mode = 'create'; // Restablecer el modo a 'create' después de la edición
+                    selectedProject = null; // Restablecer la habilidad seleccionada
+                }
+            });
+        }
     };
 
     defineProps({
@@ -58,7 +87,7 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-right">
                 <jet-primary-button
                     class="p-3 border-2 border-blue-500 text-blue-500 bg-blue-100 hover:bg-blue-200 font-bold rounded-xl"
-                    @click="acting = true">
+                    @click="acting = true; mode = 'create'">
                     Add New +
                 </jet-primary-button>
                 <!-- Modal de Crear Skill -->
@@ -137,11 +166,14 @@
                             </td>
                             <td class="px-6 py-4 text-center">
                                 <jet-primary-button
-                                    class="border border-indigo-500 text-indigo-500 bg-indigo-400 hover:bg-indigo-300 mr-2">
+                                    class="border border-indigo-500 text-indigo-500 bg-indigo-400 hover:bg-indigo-300 mr-2"
+                                    @click="acting=true; mode='edit' ; selectedProject=project; form.title=project.title;
+                                    form.description=project.description; form.color=project.color;
+                                    form.icon_name=project.icon_name;">
                                     Edit
                                 </jet-primary-button>
                                 <jet-primary-button
-                                    class="border border-red-500 text-red-800 bg-red-400 hover:bg-red-300 ml-2">
+                                    class=" border border-red-500 text-red-800 bg-red-400 hover:bg-red-300 ml-2">
                                     Delete
                                 </jet-primary-button>
                             </td>

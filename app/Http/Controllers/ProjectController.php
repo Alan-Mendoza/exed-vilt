@@ -31,4 +31,18 @@ class ProjectController extends Controller
 
         return redirect()->route('projects.index');
     }
+
+    public function update(Request $request, Project $project)
+    {
+        $request->validate([
+            'title' => ['required', 'string', 'max:225', Rule::unique(Project::class)->ignore($project->id)],
+            'description' => ['required', 'string', 'max:225'],
+            'color' => ['required', 'in:' . implode(',', Project::getAvailableTextColors())],
+            'icon_name' => ['required', 'in:' . implode(',', Project::getAvailableIcons())],
+        ]);
+
+        $project->update($request->all());
+
+        return redirect()->route('projects.index');
+    }
 }
